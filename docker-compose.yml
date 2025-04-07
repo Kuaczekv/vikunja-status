@@ -1,0 +1,13 @@
+version: "3.9"
+services:
+  klient-status:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: klient-status
+    ports:
+      - "9090:80"
+    environment:
+      - VITE_VIKUNJA_API=https://todo.presetserwis.pl/api/v1
+      - VITE_VIKUNJA_TOKEN=tk_2105ce43e5fd334f4c731201814751882977765f
+    restart: unless-stopped
