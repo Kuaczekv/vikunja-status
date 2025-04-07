@@ -1,23 +1,10 @@
-# Etap 1: Budowanie aplikacji
+# Etap 1: build aplikacji
 FROM node:20-alpine AS builder
-
-# Ustaw katalog roboczy
 WORKDIR /app
-
-# Kopiujemy pliki aplikacji
 COPY . .
+RUN npm install && npm run build
 
-# Instalujemy zależności
-RUN npm install
-
-# Budujemy aplikację
-RUN npm run build
-
-# Etap 2: Serwowanie aplikacji przez Nginx
+# Etap 2: nginx serwujący build
 FROM nginx:alpine
-
-# Kopiujemy zbudowaną aplikację do folderu Nginx
-COPY --from=builder /app/build /usr/share/nginx/html
-
-# Otwieramy port 80
-EXPOSE 9090
+COPY --from=builder /app/dist /usr/share/nginx/html
+EXPOSE 80
